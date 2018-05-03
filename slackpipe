@@ -1,0 +1,88 @@
+#!/usr/bin/env ruby
+##
+## This script lets you easily send messages to Slack from the command line or another application.
+## The message to post can be provided as a command line argument or you can just pipe the message directly to it.
+##
+## Examples:
+##   > slackpipe -m "hello world"
+##   > echo "hello world" | slackpipe
+##
+## To use this script you (or someone on your team) must first set up an "Incoming WebHook" on Slack and get
+## the custom URL they provide. You can do this here:
+## https://wondermile.slack.com/apps/A0F7XDUAZ-incoming-webhooks
+##
+## You should then set a SLACKPIPE_URL environment variable to have the value of the custom URL Slack provides.
+## > export SLACKPIPE_URL=https://hooks.slack.com/services/012345678/012345678/ABCDEFGHIJKLMNOPQRSTUVWX
+##
+## If you prefer you can instead pass the URL as a command line option like this:
+## > slackpipe -m "hello world" -u https://hooks.slack.com/services/012345678/012345678/ABCDEFGHIJKLMNOPQRSTUVWX
+##
+require "net/http"
+require 'json'
+require 'optparse'
+
+default_url = ENV["SLACKPIPE_URL"]
+default_channel = ENV["SLACKPIPE_CHANNEL"]
+default_username = ENV["SLACKPIPE_USERNAME"]
+default_icon_emoji = ENV["SLACKPIPE_ICON"]
+
+options = {:url => default_url, :channel => default_channel, :username => default_username, :icon_emoji => default_icon_emoji}
+
+## parse command line args 
+parser = OptionParser.new do|opts|
+  opts.banner = "Usage: #{$0} [options]"
+
+  opts.on('-h', '--help', 'Displays this help message') do
+    puts opts
+    exit
+  end
+
+  opts.on('-u', '--url slack_webhook_url', 'Slack Incoming WebHooks URL') do |url|
+    options[:url] = url;
+  end
+  
+  opts.on('-c', '--channel channel', 'Channel (#lobby, @mpv)') do |channel|
+    options[:channel] = channel;
+  end
+  
+  opts.on('-f', '--from username', 'Username (bob)') do |username|
+    options[:username] = username;
+  end
+  
+  opts.on('-i', '--icon icon_emoji', 'Icon Emoji (:ghost:)') do |icon_emoji|
+    options[:icon_emoji] = icon_emoji;
+  end
+
+  opts.on('-m', '--message message', 'Message') do |message|
+    options[:message] = message;
+  end
+end
+
+begin
+  parser.parse!
+  mandatory = [:url]
+  missing = mandatory.select{ |param| options[param].nil? }
+  unless missing.empty?
+    raise OptionParser::MissingArgument.new(missing.join(', '))
+  end
+rescue OptionParser::InvalidOption, OptionParser::MissingArgument
+  puts $!.to_s
+  puts parser
+  exit
+end
+
+## if no message is provided on the command line read it from stdin
+if options[:message] == nil
+  options[:message] = $stdin.read
+end
+
+## post to slack
+payload_args = {:text => options[:message], :channel => options[:channel], :username => options[:username], :icon_emoji => options[:icon_emoji]}
+payload = {:payload => payload_args.to_json}
+
+begin
+  response = Net::HTTP.post_form(URI.parse(options[:url]), payload)
+  response.value # raise error if the response is not 2xx
+rescue StandardError => e
+  raise e
+end
