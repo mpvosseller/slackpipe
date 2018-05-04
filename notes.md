@@ -1,3 +1,5 @@
+# Notes on developing a GEM
+http://guides.rubygems.org/make-your-own-gem/
 
 # Build and Install locally
     $ gem build slackpipe.gemspec
@@ -5,3 +7,5 @@
 
 ## Uninstall
     $ gem uninstall slackpipe
+
+
