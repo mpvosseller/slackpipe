@@ -17,8 +17,8 @@ You can provide the message to post as a command line argument or you can just p
   * If you prefer not using an environment variable you can also provide the URL as a command line option using `--url` or `-u`
   
 ## Environment variables and command line options
-   * `SLACKPIPE_URL` or `--url` or `-u` - Your Slack Incoming `WebHook URL` (provided by Slack)
-   * `SLACKPIPE_CHANNEL` or `--channel` or `-c`  - The channel to post your message to (e.g. `#general` or `@jane`)
-   * `SLACKPIPE_USERNAME` or `--from` or `-f`  - The username that the message should come from (e.g. `my robot`)
-   * `SLACKPIPE_ICON` or `--icon` or `-i` - The icon emoji to use for the message icon (e.g. `:ghost:`)
+   * `SLACKPIPE_URL` or `--url` or `-u` - (Required) Your Slack Incoming `WebHook URL` (provided by Slack)
+   * `SLACKPIPE_CHANNEL` or `--channel` or `-c` - (Optional) The channel to post your message to (e.g. `#general` or `@jane`)
+   * `SLACKPIPE_USERNAME` or `--from` or `-f`  - (Optional) The username that the message should come from (e.g. `my robot`)
+   * `SLACKPIPE_ICON` or `--icon` or `-i` - (Optional) The icon emoji to use for the message icon (e.g. `:ghost:`)
    
