@@ -1,6 +1,6 @@
 Slackpipe allows you to easily post messages to Slack from the command line. You might for example use this to post the results of a nightly script to a Slack channel. 
 
-You can provide the message to post as a command line argument or you can pipe the output of another program.
+You can provide the message to post as a command line argument or you can just pipe the output of another program to it.
 
 ## Installation
     $ gem install slackpipe
