@@ -5,7 +5,7 @@ You can provide the message to post as a command line argument or you can just p
 ## Installation
     $ gem install slackpipe
 
-## Usage
+## Example Usage
     $ slackpipe -m "hello world"
     $ echo "hello world" | slackpipe
     $ slackpipe -m "hello world" -c "#lobby" -f "mike's robot" -i ":ghost:" -u https://hooks.slack.com/services/ABCDEFGHIJKLMNOPQRSTUVWX`
