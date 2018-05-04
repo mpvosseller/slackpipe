@@ -1,32 +1,12 @@
 #!/usr/bin/env ruby
-##
-## This script lets you easily send messages to Slack from the command line or another application.
-## The message to post can be provided as a command line argument or you can just pipe the message directly to it.
-##
-## Examples:
-##   > slackpipe -m "hello world"
-##   > echo "hello world" | slackpipe
-##
-## To use this script you (or someone on your team) must first set up an "Incoming WebHook" on Slack and get
-## the custom URL they provide. You can do this here:
-## https://wondermile.slack.com/apps/A0F7XDUAZ-incoming-webhooks
-##
-## You should then set a SLACKPIPE_URL environment variable to have the value of the custom URL Slack provides.
-## > export SLACKPIPE_URL=https://hooks.slack.com/services/012345678/012345678/ABCDEFGHIJKLMNOPQRSTUVWX
-##
-## If you prefer you can instead pass the URL as a command line option like this:
-## > slackpipe -m "hello world" -u https://hooks.slack.com/services/012345678/012345678/ABCDEFGHIJKLMNOPQRSTUVWX
-##
 require "net/http"
 require 'json'
 require 'optparse'
 
-default_url = ENV["SLACKPIPE_URL"]
-default_channel = ENV["SLACKPIPE_CHANNEL"]
-default_username = ENV["SLACKPIPE_USERNAME"]
-default_icon_emoji = ENV["SLACKPIPE_ICON"]
-
-options = {:url => default_url, :channel => default_channel, :username => default_username, :icon_emoji => default_icon_emoji}
+options = {:url => ENV["SLACKPIPE_URL"],
+           :channel => ENV["SLACKPIPE_CHANNEL"],
+           :username => ENV["SLACKPIPE_USERNAME"],
+           :icon_emoji => ENV["SLACKPIPE_ICON"]}
 
 ## parse command line args 
 parser = OptionParser.new do|opts|
